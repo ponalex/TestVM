@@ -1,0 +1,39 @@
+        MVRV    reg6  0xFF         %% Указатель на переменные
+        MVRV    reg7  0xFF
+        MVRV    reg5  0x00
+        MVRV    reg4  0x01
+        MVM     reg5  reg6  reg7         %% Младший байт смещения
+        INCR    reg7  0x80
+        MVM     reg4  reg6  reg7         %% Старший байт смещения
+        INCR    reg7  0x80
+        MVRV    reg8  0x00         %% Сколько сегментов займет загружаемый код
+        MVRV    reg9  0xFF         %% Минимальный 1
+@ISREADY
+	%% Test comment!
+        MVRV    reg0  0x01
+        MVRV    regA  ISREADY:1    %% Указатель старшего байта адреса перехода 1
+        MVRV    regB  ISREADY:0
+        MVRV    regC  READDATA:1   %% Указатель старшего байта адреса перехода 2
+        MVRV    regD  READDATA:0
+        MVRV    regE  0x02         %% Ставим что мы готовы читать
+        AND     reg0  regE  reg1         %% Проверяем есть ли, что в регистре
+        JMPE    regC  reg0  reg1         %% Если есть переходим в #READDATA
+        CALL    -  regA  regB         %% Ничего нет, переходим #ISREADY
+@READDATA
+        MVRV    reg1  0x00         %% Записать переменную для сравнения
+        MVRV    regC  WRITESIZE:1  %% Адрес перехода для получения объема
+        MVRV    regD  WRITESIZE:0  %% загружаемой программы
+        JMPE    regC  reg0  reg8         %% Записать данные о размере программы
+        MVM     regF  reg4  reg5         %% Записать байт в память
+        INCR    reg5  0x01         %% Увеличить адрес на один
+        INCR    reg9  0x80         %% Декрементировать счетчик загружаемых блоков
+        INCR    reg7  0x01         %% Загружаем старшый байт адреса перехода
+        MVR     regC  reg6  reg7         %%
+        INCR    reg7  0x01         %% Вычисляем адрес младшего байта
+        MVR     regD  reg6  reg7         %% Загружаем младший байт
+        JMPE    regC  reg1  reg8         %% Переходим если загружена вся программа
+        CALL    -  regA  regB
+@WRITESIZE
+        MVM    regF  reg6  reg7
+        SWP     -  regF  reg8
+        CALL    -  regA  regB

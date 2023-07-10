@@ -12,7 +12,7 @@ public class Main {
 
     public static void main(String[] args) {
 
-        boolean stepMode = true;
+        boolean stepMode = false;
 
         if (args.length < 1) {
             System.out.println("Please, enter the name of source file or file with byte code.");
@@ -21,19 +21,28 @@ public class Main {
 
         Processor cpu;
         String[] byteCode;
-
-        if (args[0].matches(".*.byte")) {
+//  TODO
+//  Write handling of command line arguments.
+        if (args[0].matches(".*\\.byte")) {
             cpu = new Processor(args);
         } else {
             Interpreter interp = new Interpreter();
             String text = FileReader.loadStringFile(args[0]);
             byteCode = Interpreter.getByteCode(text);
-            for (String l : byteCode) {
-                System.out.println(l);
-            }
+//            for (String l : byteCode) {
+//                System.out.println(l);
+//            }
             cpu = new Processor(byteCode);
         }
 
+        if(args.length>=2){
+            if (args[1].matches("-t")){
+                stepMode=true;
+            }
+        }
+
+//  TODO
+//  Write handling the line according the first symbol of command line
         Scanner scanner = new Scanner(System.in);
         String inputString = ">";
         if (!stepMode) {

@@ -5,44 +5,9 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="e1ca490c-2fad-43a1-a19c-b535be7c015c" name="Changes" comment="First approximation">
-      <change afterPath="$PROJECT_DIR$/.idea/.gitignore" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/compiler.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/encodings.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/jarRepositories.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/uiDesigner.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/.idea/vcs.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/log.properties" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/pom.xml" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/program.byte" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/source.txt" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/auxiliary/CustomFormatter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/process/FileReader.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/process/Interpreter.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/src/main/java/org/example/process/Processor.java" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/Main.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/auxiliary/CustomFormatter.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/FileReader.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$1.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$10.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$11.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$12.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$13.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$14.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$15.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$16.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$2.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$3.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$4.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$5.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$6.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$7.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$8.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes$9.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter$SetOpcodes.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Interpreter.class" afterDir="false" />
-      <change afterPath="$PROJECT_DIR$/target/classes/org/example/process/Processor.class" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.gitignore" beforeDir="false" afterPath="$PROJECT_DIR$/.gitignore" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/main/java/org/example/Main.java" beforeDir="false" afterPath="$PROJECT_DIR$/src/main/java/org/example/Main.java" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
@@ -90,7 +55,7 @@
     <configuration name="logfile" type="Application" factoryName="Application">
       <option name="MAIN_CLASS_NAME" value="org.example.Main" />
       <module name="TestFSM" />
-      <option name="PROGRAM_PARAMETERS" value="source.txt" />
+      <option name="PROGRAM_PARAMETERS" value="source.txt -t" />
       <option name="VM_PARAMETERS" value="-Djava.util.logging.config.file=$PROJECT_DIR$/log.properties" />
       <method v="2">
         <option name="Make" enabled="true" />

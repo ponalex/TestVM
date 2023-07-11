@@ -13,8 +13,7 @@ public class Processor implements Runnable {
     private int programCounter;
 
     private static final Logger logger = Logger.getLogger(Processor.class.getName());
-    // Fine  предназначен для отладки
-    // Finest предназначен для глубокой отладки
+    // Finest is intented for debugging
 
     public Processor(String filename) {
 
@@ -70,11 +69,10 @@ public class Processor implements Runnable {
     }
 
     public boolean readyToWrite() {
+        logger.log(Level.FINE, "Set \'ready to write\' bit");
         if ((Register[14] & 0b11) == 2) {
-            logger.log(Level.FINE, "Set \'ready to write\' bit");
             return true;
         }
-        logger.log(Level.FINE, "Set \'ready to write\' bit");
         return false;
     }
 

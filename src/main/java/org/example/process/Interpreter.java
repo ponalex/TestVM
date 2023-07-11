@@ -23,7 +23,7 @@ public class Interpreter {
         String[] bytes;
         String[] byteCode = new String[words.length*2];
         for (String word:words) {
-            bytes = Interpreter.SetOpcodes.NOP.getOpcode(word).split(" ",2);
+            bytes = Interpreter.SetOpcodes.NOP.getOpcode(word).split("\s+",2);
             byteCode[counter] = String.format("%04X: %s", counter, bytes[0]);
             counter++;
             byteCode[counter] = String.format("%04X: %s", counter, bytes[1]);
@@ -34,7 +34,7 @@ public class Interpreter {
 
     public static String formatterCode(String text) {
         String result = text.strip();
-        result = result.replaceAll("[ ]{2,}", " ");
+        result = result.replaceAll("\s{2,}", " ");
         result = result.replaceAll("\\n[ \\t]+", "\n");
         result = result.replaceAll("[ ]*%%.*\\n", "\n");
         result = result.replaceAll("\\n[ ]*\\n", "\n");
@@ -179,7 +179,6 @@ public class Interpreter {
             }
         },
         MVR {
-            //4
             @Override
             public String evaluate(String data) {
                 String prefix = "4";

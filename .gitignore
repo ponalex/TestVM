@@ -2,4 +2,5 @@
 /shelf/
 /workspace.xml
 target
+src/test
 .idea

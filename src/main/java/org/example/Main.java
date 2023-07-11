@@ -26,7 +26,6 @@ public class Main {
         if (args[0].matches(".*\\.byte")) {
             cpu = new Processor(args);
         } else {
-            Interpreter interp = new Interpreter();
             String text = FileReader.loadStringFile(args[0]);
             byteCode = Interpreter.getByteCode(text);
 //            for (String l : byteCode) {

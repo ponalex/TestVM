@@ -1,5 +1,6 @@
 package org.example;
 
+import org.example.auxiliary.CLogger;
 import org.example.process.FileReader;
 import org.example.process.Interpreter;
 import org.example.process.Processor;
@@ -15,8 +16,8 @@ public class Main {
         boolean stepMode = false;
 
         if (args.length < 1) {
-            System.out.println("Please, enter the name of source file or file with byte code.");
-            System.exit(-1);
+            CLogger.printWarning("[Main]Please, enter the name of source file or file with byte code.");
+            return;
         }
 
         Processor cpu;

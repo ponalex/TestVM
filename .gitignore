@@ -3,4 +3,5 @@
 /workspace.xml
 target
 src/test
+TestFSM.iml
 .idea

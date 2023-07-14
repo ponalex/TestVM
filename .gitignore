@@ -2,6 +2,6 @@
 /shelf/
 /workspace.xml
 target
-test
+src/test
 TestFSM.iml
 .idea

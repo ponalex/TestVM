@@ -18,7 +18,7 @@
         MVRV    regE  0x02         %% Ставим что мы готовы читать
         AND     reg0  regE  reg1         %% Проверяем есть ли, что в регистре
         JMPE    regC  reg0  reg1         %% Если есть переходим в #READDATA
-        CALL    -  regA  regB         %% Ничего нет, переходим #ISREADY
+        CALL      regA  regB         %% Ничего нет, переходим #ISREADY
 @READDATA
         MVRV    reg1  0x00         %% Записать переменную для сравнения
         MVRV    regC  WRITESIZE:1  %% Адрес перехода для получения объема
@@ -32,8 +32,8 @@
         INCR    reg7  0x01         %% Вычисляем адрес младшего байта
         MVR     regD  reg6  reg7         %% Загружаем младший байт
         JMPE    regC  reg1  reg8         %% Переходим если загружена вся программа
-        CALL    -  regA  regB
+        CALL     regA  regB
 @WRITESIZE
         MVM    regF  reg6  reg7
-        SWP     -  regF  reg8
-        CALL    -  regA  regB
+        SWP       regF  reg8
+        CALL      regA  regB

@@ -27,7 +27,7 @@ public enum Opcodes {
         public int getType(){return 2;}
     },JMPE(8){
         @Override
-        public int getType(){return 2;}
+        public int getType(){return 3;}
     },NOT(9){
         @Override
         public int getType(){return 2;}

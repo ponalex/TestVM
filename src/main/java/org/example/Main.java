@@ -6,6 +6,7 @@ import org.example.process.Interpreter;
 import org.example.process.Processor;
 
 import java.util.Scanner;
+import java.util.logging.Level;
 
 
 public class Main {
@@ -15,6 +16,7 @@ public class Main {
 
         boolean stepMode = false;
 
+        CLogger.setLoggerLevel(Level.FINER);
         if (args.length < 1) {
             CLogger.printWarning("[Main]Please, enter the name of source file or file with byte code.");
             return;
@@ -24,8 +26,8 @@ public class Main {
         String[] byteCode;
 //  TODO
 //  Write handling of command line arguments.
-        if (args[0].matches(".*\\.byte")) {
-            cpu = new Processor(args);
+        if (args[0].matches(".*.byte")) {
+            cpu = new Processor(args[0]);
         } else {
             String text = FileReader.loadStringFile(args[0]);
             byteCode = Interpreter.getByteCode(text);
@@ -47,7 +49,7 @@ public class Main {
         String inputString = ">";
         if (!stepMode) {
             Thread process = new Thread(cpu);
-            process.run();
+            process.start();
 
             while (process.isAlive()) {
                 inputString = scanner.nextLine();
@@ -60,6 +62,9 @@ public class Main {
                 inputString = scanner.nextLine();
                 if (inputString.compareTo(">")==0) {
                     cpu.makeOneStep();
+                }
+                if (inputString.compareTo("!")==0) {
+                    cpu.stopProcessor();
                 }
             }
         }

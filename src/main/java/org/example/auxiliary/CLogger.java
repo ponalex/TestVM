@@ -76,25 +76,25 @@ public class CLogger {
     }
 
     public static void printTypeZero(String message){
-        String template = "| %5s :                                    |";
+        String template = "| %5s:                                     |";
         logger.log(FINER, String.format(template, message));
     }
 
     public static void printTypeOne(String message, int expandedA, int value){
         //                  | OPCODE | RegisterA | Register0 | Register1 |
-        String template =  "| %5s : 0x%4X    0x%22x |";
+        String template =  "| %5s: 0x%4X | 0x%24x |";
         logger.log(FINER, String.format(template, message , expandedA, value ));
     }
 
     public static void printTypeTwo(String message, int reg0, int reg1){
         //                  | OPCODE | RegisterA | Register0 | Register1 |
-        String template =  "| %5s : -                 -    0x%2X : 0x%2x |";
+        String template =  "| %5s:        |           -    0x%2X : 0x%2x |";
         logger.log(FINER, String.format(template, message , reg0, reg1 ));
     }
 
     public static void printTypeThree(String message, int regA, int reg0, int reg1){
         //                  | OPCODE | RegisterA | Register0 | Register1 |
-        String template =  "| %5s :                0x%4X  0x%2X : 0x%2X |";
+        String template =  "| %5s:        |        0x%4X  0x%2X : 0x%2X |";
         logger.log(FINER, String.format(template, message , regA, reg0, reg1 ));
     }
 

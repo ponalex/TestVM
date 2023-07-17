@@ -35,8 +35,8 @@ public class Interpreter {
     public static String formatterCode(String text) {
         String result = text.strip();
         result = result.replaceAll("[\s\t]+", " ");      // removing white spaces
-        result = result.replaceAll("\s*%%.*\\n*\s*", "\n");  // removing comments
-        result = result.replaceAll("\s*\\n+\s*", "\n");
+        result = result.replaceAll("\s*%%.*\n*\s*", "\n");  // removing comments
+        result = result.replaceAll("\s*\n+\s*", "\n");
         return result.strip();
     }
 

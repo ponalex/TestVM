@@ -45,19 +45,8 @@ public class Structure {
         String result;
         Opcodes opcodes;
         opcodes = Opcodes.valueOf(words[0]);
-        int type = opcodes.getType();
-        result = opcodes.getOpcode();
-        if (type == 0) {
-            if(words.length>1){throw new IllegalArgumentException();}
-            result = result + opcodes.parseTypeZero("");
-        } else if (type == 1) {
-            result = result + opcodes.parseTypeOne(words[1]);
-        } else if (type == 2) {
-            result = result + opcodes.parseTypeTwo(words[1]);
-        } else if (type == 3) {
-            result = result + opcodes.parseTypeThree(words[1]);
-        }
-        return result;
+        result = opcodes.getType().parsing(words[1]);
+        return opcodes.getOpcode() + result;
     }
 
 }

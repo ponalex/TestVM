@@ -1,6 +1,7 @@
 package org.example.process;
 
 
+import java.util.Arrays;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -75,13 +76,18 @@ public abstract class CPU {
         return register[i];
     }
 
-    public void writeBlockToMemory(Map<Integer, Integer> block) {
-        Iterator<Map.Entry<Integer, Integer>> iterator = block.entrySet().iterator();
-        Map.Entry<Integer, Integer> element;
-        while (iterator.hasNext()) {
-            element = iterator.next();
-            memory[(element.getKey() & memory.length)] = (element.getValue() & memoryMap);
+    public void writeBlockToMemory(int[] block, int initDestPos) {
+        if((initDestPos + block.length) > memory.length){
+            throw new NullPointerException("block for writing to memory is too big.");
         }
+        System.arraycopy(block,0,memory,initDestPos, block.length);
+    }
+
+    public void writeBlockToMemory(int[] block) {
+        if (block.length > memory.length) {
+            throw new NullPointerException("block for writing to memory is too big.");
+        }
+        System.arraycopy(block,0,memory,0, block.length);
     }
 
     public void writeToRegister(int address, int word) {

@@ -71,40 +71,16 @@ public class Interpreter {
     }
 
     public static int numberConverter(String text) {
-        String line;
-        if (text.length()>2){
-            line = text.substring(0, 2);
+        int result;
+        if(text.length()<=2){
+            result = Integer.parseInt(text);
         }
         else{
-            line = "";
-        }
-        int result = 0;
-        switch (line) {
-            case "0x":
-                try {
-                    result = Integer.parseInt(text.substring(2), 16);
-                } catch (NumberFormatException nfe) {
-                    // Log it
-                    System.out.println("Wrong hex number " + text);
-                    throw nfe;
-                }
-                break;
-            case "0b":
-                try {
-                    result = Integer.parseInt(text.substring(2), 2);
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Wrong binary number " + text);
-                    throw nfe;
-                }
-                break;
-            default:
-                try {
-                    result = Integer.parseInt(text);
-                } catch (NumberFormatException nfe) {
-                    System.out.println("Wrong decimal number " + text);
-                    throw nfe;
-                }
-                break;
+            if(text.startsWith("0b")){
+                result= Integer.getInteger(text, 2);
+            }else{
+                result=Integer.decode(text);
+            }
         }
         return result;
     }

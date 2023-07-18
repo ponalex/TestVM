@@ -34,10 +34,22 @@ public class Interpreter {
 
     public static String formatterCode(String text) {
         String result = text.strip();
-        result = result.replaceAll("[\s\t]+", " ");      // removing white spaces
-        result = result.replaceAll("\s*%%.*\n*\s*", "\n");  // removing comments
-        result = result.replaceAll("\s*\n+\s*", "\n");
+        result = removeSpaces(result);      // removing white multiple spaces
+        result = removeComments(result);
+        result = removeEmptyStrings(result);
         return result.strip();
+    }
+
+    public static String removeSpaces(String text){
+        return text.replaceAll("[\s\t]+", " ");
+    }
+
+    public static String removeComments(String text){
+        return text.replaceAll("\s*(%%)+.*\n*", "\n");
+    }
+
+    public static String removeEmptyStrings(String text){
+        return text.replaceAll("(\s*\n+)+\s*", "\n");
     }
 
     private static String[] getVariablesValue(String text, Structure variableMap) {

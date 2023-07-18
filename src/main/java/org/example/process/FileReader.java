@@ -82,14 +82,11 @@ public class FileReader {
         String answer;
         System.out.print("Please enter y(yes)/n(no): ");
         answer = sc.nextLine();
-        boolean result;
         answer = answer.strip();
         answer = answer.toLowerCase().substring(0, 2);
         if (answer.compareTo("y") == 0) {
-            result = true;
-        } else {
-            result = false;
+            return true;
         }
-        return result;
+        return false;
     }
 }

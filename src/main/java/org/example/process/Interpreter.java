@@ -40,15 +40,15 @@ public class Interpreter {
         return result.strip();
     }
 
-    public static String removeSpaces(String text){
+    private static String removeSpaces(String text){
         return text.replaceAll("[\s\t]+", " ");
     }
 
-    public static String removeComments(String text){
+    private static String removeComments(String text){
         return text.replaceAll("\s*(%%)+.*\n*", "\n");
     }
 
-    public static String removeEmptyStrings(String text){
+    private static String removeEmptyStrings(String text){
         return text.replaceAll("(\s*\n+)+\s*", "\n");
     }
 

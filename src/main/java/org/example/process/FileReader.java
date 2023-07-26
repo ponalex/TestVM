@@ -1,5 +1,7 @@
 package org.example.process;
 
+import org.example.auxiliary.SimpleLogger;
+
 import java.io.*;
 import java.nio.charset.Charset;
 import java.nio.charset.StandardCharsets;
@@ -8,13 +10,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Scanner;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import java.util.stream.Collectors;
 
 public class FileReader {
 
-    public static final Logger logger = Logger.getLogger(FileReader.class.getName());
     public static final int exitcode = -2;
     private static final Charset CHARSET = StandardCharsets.UTF_8;
 
@@ -24,8 +23,8 @@ public class FileReader {
         try {
             fileStream = new FileInputStream(configFile);
         } catch (FileNotFoundException e) {
-            logger.log(Level.SEVERE,
-                    String.format("[%s] File \'%s\' not found", logger.getName(), filename));
+            SimpleLogger.printError(
+                    String.format("File \'%s\' was not found", filename));
             System.exit(exitcode);
         }
 
@@ -33,10 +32,9 @@ public class FileReader {
         try {
             fileStream.read(nBytes);
         } catch (IOException e) {
-            logger.log(Level.SEVERE,
-                    String.format("[%s] Cannot read file \'%s\'.", logger.getName(), filename),
-                    new RuntimeException(e)
-            );
+            SimpleLogger.printError(
+                    String.format("Cannot read file \'%s\'.", filename));
+                    throw new RuntimeException(e);
         }
         String text = new String(nBytes, StandardCharsets.UTF_8);
         return text;
@@ -46,12 +44,15 @@ public class FileReader {
         Path defaultPath = Paths.get(filename);
         List<String> lines = new ArrayList<>();
         if (!Files.exists(defaultPath)) {
+            SimpleLogger.printError(String.format("File \'%s\' was not found", filename));
             throw new FileSystemNotFoundException(String.format("File %s was not found", filename));
         }
 
         try {
             lines = Files.readAllLines(defaultPath, CHARSET);
         } catch (IOException e) {
+            SimpleLogger.printError(
+                    String.format("Cannot read file \'%s\'.", filename));
             throw new RuntimeException("Problem with reading '%s' file");
         }
 
@@ -73,6 +74,8 @@ public class FileReader {
         try {
             Files.writeString(pathToFile, text, CHARSET, StandardOpenOption.WRITE);
         } catch (IOException e) {
+            SimpleLogger.printError(
+                    String.format("Cannot write the file \'%s\'.", filename));
             throw new RuntimeException(String.format("Problem with writing file %s", filename));
         }
     }

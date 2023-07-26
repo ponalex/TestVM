@@ -1,6 +1,9 @@
 package org.example.process;
 
-public class CPU8 extends CPU {
+import java.util.Arrays;
+import java.util.stream.Collectors;
+
+public class CPU8 extends CPU implements Runnable {
 
     private static final int LENGTH_OF_MEMORY = 65536;
     private static final int NUMBERS_OF_REGISTERS = 16;
@@ -27,11 +30,19 @@ public class CPU8 extends CPU {
         );
     }
 
+    public void loadMemory(String[] byteCode){
+        int[] opcodes = Arrays
+                .stream(byteCode)
+                .map(p -> p.split("\s*:\s*")[1])
+                .mapToInt(p -> Integer.parseInt(p, 16)).toArray();
+        writeBlockToMemory(opcodes);
+    }
+
     @Override
     public void makeOneStep() {
         excerpt();
         evaluate();
-        clearInstructionRegister();
+//        clearInstructionRegister();
     }
 
     // selection from

@@ -1,11 +1,8 @@
 package org.example.process;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.Map;
-
-public abstract class CPU {
+public abstract class CPU implements Runnable{
     private final int[] memory;
     private final int[] register;
     private int instructionRegister;
@@ -14,6 +11,9 @@ public abstract class CPU {
     private final int programCounterMap;
     private final int memoryMap;
     private final int registerMap;
+
+    private static AtomicBoolean isStopped;
+
 
     //  lengthOfMemory - what is memory length in words
     //  numberOfRegisters - how many register which is used for calculation
@@ -25,12 +25,13 @@ public abstract class CPU {
                   int memoryField,
                   int registerField,
                   int programCounterMap) {
-        this.memory = new int[lengthOfMemory];
-        this.register = new int[numberOfRegisters];
-        this.memoryMap = memoryField;
-        this.registerMap = registerField;
+        memory = new int[lengthOfMemory];
+        register = new int[numberOfRegisters];
+        memoryMap = memoryField;
+        registerMap = registerField;
         this.programCounterMap = programCounterMap;
-        this.programCounter = 0;
+        programCounter = 0;
+        isStopped = new AtomicBoolean(false);
     }
 
     public void incrementProgramCounter() {
@@ -61,12 +62,23 @@ public abstract class CPU {
             return new int[]{memory[finalPos], memory[initPos]};
         }
         int[] result = new int[finalPos - initPos];
-        if (finalPos - initPos >= 0) System.arraycopy(memory, initPos, result, initPos, finalPos - initPos);
+        if (finalPos - initPos >= 0) System.arraycopy(memory, initPos, result, 0, finalPos - initPos);
         return result;
     }
 
-    public int readWordFromMemory() {
-        return memory[instructionRegister];
+    public String[] getMemoryValue(int initPos, int lastPos){
+        int[] memoryValue = readBlockFromMemory(initPos, lastPos);
+        String[] result = new String[memoryValue.length];
+        int counter = 0 ;
+        for (int value:memoryValue) {
+            result[counter] = String.format("0x%04x : 0x%02x", counter+initPos, value);
+            counter++;
+        }
+        return result;
+    }
+
+    protected int readWordFromMemory() {
+        return memory[programCounter];
     }
 
     public int readRegister(int i) {
@@ -97,10 +109,6 @@ public abstract class CPU {
         register[address] = (word & registerMap);
     }
 
-    public void clearInstructionRegister() {
-        instructionRegister = 0;
-    }
-
     public int getInstructionRegister() {
         return instructionRegister;
     }
@@ -110,5 +118,19 @@ public abstract class CPU {
     }
 
     public abstract void makeOneStep();
+
+    public void run(){
+        while (!isStopped.get()){
+            makeOneStep();
+        }
+    }
+
+    public void stopProcessor(){
+        isStopped.set(true);
+    }
+
+    public boolean isWorking(){
+        return isStopped.get();
+    }
 
 }

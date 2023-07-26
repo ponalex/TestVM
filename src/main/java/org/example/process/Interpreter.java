@@ -1,32 +1,36 @@
 package org.example.process;
 
-import java.util.ArrayList;
+import org.example.auxiliary.Display;
+
+import java.util.*;
 
 public class Interpreter {
 
     private static final int BASE = 2;
 
-    public static String[] getByteCode(String text){
-        Structure structure = new Structure();
+    public static String[] translateCommandToCode(String text, HashMap<String, Integer> variableMap) {
         String lines = formatterCode(text);
-        String [] words = getVariablesValue(lines, structure);
-        String[] source = setVariables(words, structure);
+        String[] commands = getShiftOfFunction(lines, variableMap, BASE);
+        commands = Arrays.stream(commands).map(w -> substituteVariables(w, variableMap)).toArray(String[]::new);
 
-        int counter=0;
+        return splitByteString(commands).toArray(new String[0]);
+    }
+
+    public static List<String> splitByteString(String[] lines){
+        int counter = 0;
         String[] bytes;
-        String[] byteCode = new String[words.length*2];
-        for (String word:source) {
+        List<String> byteCode = new ArrayList<>();
+        for (String word : lines) {
             try {
-                bytes = structure.getByteString(word).split("\s+");
-            }
-            catch (IllegalArgumentException ex){
+                bytes = convertStringToCode(word).split("\s+");
+            } catch (IllegalArgumentException ex) {
                 // log it
-                System.out.println("Error in " + words[counter>>1]);
+                System.out.println("Error in " + lines[counter >> 1]);
                 throw ex;
             }
-            byteCode[counter] = String.format("%04X: %s", counter, bytes[0]);
+            byteCode.add(String.format("%04X: %s", counter, bytes[0]));
             counter++;
-            byteCode[counter] = String.format("%04X: %s", counter, bytes[1]);
+            byteCode.add(String.format("%04X: %s", counter, bytes[1]));
             counter++;
         }
         return byteCode;
@@ -40,19 +44,21 @@ public class Interpreter {
         return result.strip();
     }
 
-    private static String removeSpaces(String text){
+    private static String removeSpaces(String text) {
         return text.replaceAll("[\s\t]+", " ");
     }
 
-    private static String removeComments(String text){
+    private static String removeComments(String text) {
         return text.replaceAll("\s*(%%)+.*\n*", "\n");
     }
 
-    private static String removeEmptyStrings(String text){
+    private static String removeEmptyStrings(String text) {
         return text.replaceAll("(\s*\n+)+\s*", "\n");
     }
 
-    private static String[] getVariablesValue(String text, Structure variableMap) {
+    public static String[] getShiftOfFunction(String text,
+                                              HashMap<String, Integer> variableMap,
+                                              int base) {
         int counter = 0;
         String[] lines = text.strip().split("\n");
         ArrayList<String> result = new ArrayList<>();
@@ -60,7 +66,11 @@ public class Interpreter {
         for (String line : lines) {
             if (line.startsWith("@")) {
                 tempLine = line.substring(1);
-                variableMap.addVariable(tempLine, counter, BASE);
+                if (variableMap.containsKey(tempLine + ":0")) {
+                    throw new IllegalArgumentException(
+                            String.format("%s function have been already defined", tempLine));
+                }
+                addVariableToMap(tempLine,counter,base,variableMap);
                 continue;
             }
             result.add(line.strip());
@@ -69,32 +79,58 @@ public class Interpreter {
         return result.toArray(new String[0]);
     }
 
-    private static String[] setVariables(String[] lines,Structure variableMap) {
-        String[] result = new String[lines.length];
-        int counter=0;
-        for (String line:lines) {
-            for (String var : variableMap.getKeySet()) {
-                line = line.replaceAll(var, variableMap.getHexCode(var));
-            }
-            result[counter] = line;
-            counter++;
+
+    private static void addVariableToMap(
+            String variableName,
+            int variableValue,
+            int length,
+            HashMap<String, Integer> variableMap) {
+        String tempName;
+        int tempValue;
+        for (int i = 0; i < length; i++) {
+            tempName = variableName + ":" + i;
+            tempValue = (variableValue >> (i * 8)) & 0xFF;
+            variableMap.put(tempName, tempValue);
         }
-        return result;
+    }
+    public static String substituteVariables(String line,
+                                             HashMap<String, Integer> variableMap) {
+        Iterator<String> iterator = variableMap.keySet().iterator();
+        String var;
+        String value;
+        while (iterator.hasNext()) {
+            var=iterator.next();
+            value = "0x" + Integer.toHexString(variableMap.get(var)).toUpperCase();
+            line = line.replaceAll(var, value);
+        }
+        return line;
     }
 
     public static int numberConverter(String text) {
         int result;
-        if(text.length()<=2){
+        if (text.length() <= 2) {
             result = Integer.parseInt(text);
-        }
-        else{
-            if(text.startsWith("0b")){
-                result= Integer.getInteger(text, 2);
-            }else{
-                result=Integer.decode(text);
+        } else {
+            if (text.startsWith("0b")) {
+                result = Integer.getInteger(text, 2);
+            } else {
+                result = Integer.decode(text);
             }
         }
         return result;
+    }
+
+    public static String convertStringToCode(String command) throws IllegalArgumentException {
+        String[] words = command.split("\s+", 2);
+        String result;
+        Opcodes opcodes;
+        opcodes = Opcodes.valueOf(words[0]);
+        try {
+            result = opcodes.getType().parsing(words[1]);
+        } catch (ArrayIndexOutOfBoundsException ex) {
+            result = opcodes.getType().parsing("");
+        }
+        return opcodes.getOpcode() + result;
     }
 
 }

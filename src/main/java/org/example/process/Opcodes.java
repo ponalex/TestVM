@@ -1,97 +1,60 @@
 package org.example.process;
 
+import static org.example.process.ExpressionType.*;
+
 public enum Opcodes {
-    NOP(0){
-        @Override
-        public int getType(){return 0;}
-    },MVMV(1){
-        @Override
-        public int getType(){return 1;}
-    },MVM(2){
-        @Override
-        public int getType(){return 3;}
-    },MVRV(3){
-        @Override
-        public int getType(){return 1;}
-    },MVR(4){
-        @Override
-        public int getType(){return 3;}
-    },SWP(5){
-        @Override
-        public int getType(){return 2;}
-    },SPC(6){
-        @Override
-        public int getType(){return 2;}
-    },CALL(7){
-        @Override
-        public int getType(){return 2;}
-    },JMPE(8){
-        @Override
-        public int getType(){return 3;}
-    },NOT(9){
-        @Override
-        public int getType(){return 2;}
-    },AND(10){
-        @Override
-        public int getType(){return 3;}
-    },PLUS(11){
-        @Override
-        public int getType(){return 3;}
-    },OR(12){
-        @Override
-        public int getType(){return 3;}
-    },MINUS(13){
-        @Override
-        public int getType(){return 3;}
-    },INCR(14){
-        @Override
-        public int getType(){return 1;}
-    },SHFT(15){
-        @Override
-        public int getType(){return 1;}
-    };
+    NOP(0, ExpressionType.TYPE_ZERO),
+    MVMV(1, TYPE_ONE),
+    MVM(2, TYPE_THREE),
+    MVRV(3, TYPE_ONE),
+    MVR(4, TYPE_THREE),
+    SWP(5, TYPE_TWO),
+    SPC(6, TYPE_TWO),
+    CALL(7, TYPE_TWO),
+    JMPE(8, TYPE_THREE),
+    NOT(9, TYPE_TWO),
+    AND(10, TYPE_THREE),
+    PLUS(11, TYPE_THREE),
+    OR(12, TYPE_THREE),
+    MINUS(13, TYPE_THREE),
+    INCR(14, TYPE_ONE),
+    SHFT(15, TYPE_ONE);
 
     private int opcode;
-    Opcodes(int opcode) {
+    private ExpressionType expressionType;
+
+    Opcodes(int opcode, ExpressionType expressionType) {
         this.opcode = opcode;
+        this.expressionType = expressionType;
     }
 
-    public String getOpcode(){
+    public String getOpcode() {
         return Integer.toHexString(this.opcode);
     }
 
-    public String parseTypeZero(String line){
-        return "0 00";
+    public Opcodes getOpcode(int code) {
+        switch (code){
+            case 0: return NOP;
+            case 1: return MVMV;
+            case 2: return MVM;
+            case 3: return MVRV;
+            case 4: return MVR;
+            case 5: return SWP;
+            case 6: return SPC;
+            case 7: return CALL;
+            case 8: return JMPE;
+            case 9: return NOT;
+            case 0xA: return AND;
+            case 0xB: return PLUS;
+            case 0xC: return OR;
+            case 0XD: return MINUS;
+            case 0xE: return INCR;
+            case 0xF: return SHFT;
+        }
+        return NOP;
     }
 
-    public String parseTypeOne(String line){
-        String[] command = line.split("\s+",2);
-        int firstNumber = Interpreter.numberConverter(command[0]);
-        int secondNumber = Interpreter.numberConverter(command[1]);
-        String firstString = Integer.toHexString(firstNumber & 0xF).toUpperCase();
-        String secondString = Integer.toHexString(secondNumber & 0xFF).toUpperCase();
-        return firstString + " " + secondString;
+    public ExpressionType getType(){
+        return this.expressionType;
     }
-
-    public String parseTypeTwo(String line){
-        String[] command = line.split("\s+",2);
-        int firstNumber = Interpreter.numberConverter(command[0]);
-        int secondNumber = Interpreter.numberConverter(command[1]);
-        String firstString = Integer.toHexString(firstNumber & 0xF).toUpperCase();
-        String secondString = Integer.toHexString(secondNumber & 0xF).toUpperCase();
-        return "0 " + firstString + secondString;
-    }
-
-    public String parseTypeThree(String line){
-        String[] command = line.split("\s+",3);
-        int firstNumber = Interpreter.numberConverter(command[0]);
-        int secondNumber = Interpreter.numberConverter(command[1]);
-        int thirdNumber = Interpreter.numberConverter(command[2]);
-        String firstString = Integer.toHexString(firstNumber & 0xF).toUpperCase();
-        String secondString = Integer.toHexString(secondNumber & 0xF).toUpperCase();
-        String thirdString = Integer.toHexString(thirdNumber & 0xF).toUpperCase();
-        return  firstString + " " + secondString + thirdString;
-    }
-
-    public abstract int getType();
 }

@@ -1,10 +1,14 @@
 package org.example;
 
-import org.example.auxiliary.CLogger;
+import org.example.auxiliary.SimpleLogger;
+import org.example.auxiliary.Configuration;
+import org.example.auxiliary.Display;
+import org.example.process.CPU8;
+import org.example.process.CommandController;
 import org.example.process.FileReader;
 import org.example.process.Interpreter;
-import org.example.process.Processor;
 
+import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
 
@@ -14,58 +18,49 @@ public class Main {
 
     public static void main(String[] args) {
 
-        boolean stepMode = false;
+        SimpleLogger.setLoggerLevel(Level.WARNING);
+        Configuration config = Configuration.getConfiguration();
+        Configuration.setConfiguration(args);
 
-        CLogger.setLoggerLevel(Level.FINER);
-        if (args.length < 1) {
-            CLogger.printWarning("[Main]Please, enter the name of source file or file with byte code.");
-            return;
+        HashMap<String, Integer> variableMap = new HashMap<>();
+        for (int i = 0; i < 16; i++) {
+            variableMap.put("reg" + Integer.toHexString(i).toUpperCase(), i);
         }
 
-        Processor cpu;
-        String[] byteCode;
 //  TODO
 //  Write handling of command line arguments.
-        if (args[0].matches(".*.byte")) {
-            cpu = new Processor(args[0]);
-        } else {
-            String text = FileReader.loadStringFile(args[0]);
-            byteCode = Interpreter.getByteCode(text);
-//            for (String l : byteCode) {
-//                System.out.println(l);
-//            }
-            cpu = new Processor(byteCode);
-        }
-
-        if(args.length>=2){
-            if (args[1].matches("-t")){
-                stepMode=true;
+        CPU8 cpu = new CPU8();
+        if (Configuration.INTERACTIVE) {
+            String text = FileReader.loadStringFile(Configuration.INPUT_FILE);
+            String[] byteCode;
+            if (!Configuration.SOURCE_FILE) {
+                byteCode = Interpreter.splitByteString(text.split("\n")).toArray(new String[0]);
+            } else {
+                byteCode = Interpreter.translateCommandToCode(text, variableMap);
             }
+            cpu.loadMemory(byteCode);
         }
 
 //  TODO
 //  Write handling the line according the first symbol of command line
         Scanner scanner = new Scanner(System.in);
         String inputString = ">";
-        if (!stepMode) {
+        CommandController controller = new CommandController(cpu);
+        if (!Configuration.INTERACTIVE) {
             Thread process = new Thread(cpu);
             process.start();
 
             while (process.isAlive()) {
                 inputString = scanner.nextLine();
-                if (cpu.readyToWrite()) {
-                    cpu.writeRegister(1);
-                }
+//                if (cpu.readyToWrite()) {
+//                    cpu.writeRegister(1);
+//                }
             }
         } else {
-            while (inputString.compareTo("!")!=0) {
+            while (!controller.getStatus()) {
+                Display.promptString();
                 inputString = scanner.nextLine();
-                if (inputString.compareTo(">")==0) {
-                    cpu.makeOneStep();
-                }
-                if (inputString.compareTo("!")==0) {
-                    cpu.stopProcessor();
-                }
+                controller.sendCommand(inputString);
             }
         }
     }

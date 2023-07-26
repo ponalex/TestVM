@@ -5,3 +5,4 @@ target
 src/test
 TestFSM.iml
 .idea
+out

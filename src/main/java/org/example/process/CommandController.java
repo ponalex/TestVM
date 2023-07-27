@@ -129,12 +129,12 @@ public class CommandController {
             case "$memory" -> {
                 int[] var = command.stream().mapToInt(Integer::decode).toArray();
                 processor.writeWordToMemory(var[0], var[1]);
-                result.add(String.format("Memory 0x%04x: 0x%02x", var[0], processor.readRegister(var[0])));
+                result.add(String.format("Memory 0x%04x: 0x%02x", var[0], processor.readWordFromMemory(var[0])));
             }
             case "$PC" -> {
                 int[] var = command.stream().mapToInt(Integer::decode).toArray();
                 processor.setProgramCounter(var[0]);
-                result.add(String.format("Program counter: 0x%04x", processor.readRegister(var[0])));
+                result.add(String.format("Program counter: 0x%04x", processor.getProgramCounter()));
             }
             default -> SimpleLogger.printWarning(
                             String.format("There is no such function!"));

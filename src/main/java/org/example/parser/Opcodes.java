@@ -1,6 +1,6 @@
-package org.example.process;
+package org.example.parser;
 
-import static org.example.process.ExpressionType.*;
+import static org.example.parser.ExpressionType.*;
 
 public enum Opcodes {
     NOP(0, ExpressionType.TYPE_ZERO),

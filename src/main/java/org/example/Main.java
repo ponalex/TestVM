@@ -6,7 +6,7 @@ import org.example.auxiliary.Display;
 import org.example.process.CPU8;
 import org.example.process.CommandController;
 import org.example.process.FileReader;
-import org.example.process.Interpreter;
+import org.example.parser.Interpreter;
 
 import java.util.HashMap;
 import java.util.Scanner;

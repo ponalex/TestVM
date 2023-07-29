@@ -1,6 +1,4 @@
-package org.example.process;
-
-import org.example.auxiliary.Display;
+package org.example.parser;
 
 import java.util.*;
 

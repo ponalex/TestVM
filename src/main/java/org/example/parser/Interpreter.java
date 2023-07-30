@@ -14,7 +14,7 @@ public class Interpreter {
         return splitByteString(commands).toArray(new String[0]);
     }
 
-    public static List<String> splitByteString(String[] lines){
+    public static List<String> splitByteString(String[] lines) {
         int counter = 0;
         String[] bytes;
         List<String> byteCode = new ArrayList<>();
@@ -68,7 +68,7 @@ public class Interpreter {
                     throw new IllegalArgumentException(
                             String.format("%s function have been already defined", tempLine));
                 }
-                addVariableToMap(tempLine,counter,base,variableMap);
+                addVariableToMap(tempLine, counter, base, variableMap);
                 continue;
             }
             result.add(line.strip());
@@ -91,13 +91,14 @@ public class Interpreter {
             variableMap.put(tempName, tempValue);
         }
     }
+
     public static String substituteVariables(String line,
                                              HashMap<String, Integer> variableMap) {
         Iterator<String> iterator = variableMap.keySet().iterator();
         String var;
         String value;
         while (iterator.hasNext()) {
-            var=iterator.next();
+            var = iterator.next();
             value = "0x" + Integer.toHexString(variableMap.get(var)).toUpperCase();
             line = line.replaceAll(var, value);
         }
@@ -129,6 +130,37 @@ public class Interpreter {
             result = opcodes.getType().parsing("");
         }
         return opcodes.getOpcode() + result;
+    }
+
+    public static List<String> getLexeme(String text) {
+        List<String> result = new ArrayList<>();
+        char[] symbols = removeSpaces(text).toCharArray();
+        SpecialSymbols specSymbol;
+        String temp = "";
+        boolean isString = false;
+        for (char symbol : symbols) {
+            specSymbol = SpecialSymbols.getType(symbol);
+            if (specSymbol.equals(SpecialSymbols.QUOTE)) {
+                isString = (!isString);
+                continue;
+            }
+            if (isString || specSymbol.equals(SpecialSymbols.OTHER)) {
+                temp = temp + symbol;
+                continue;
+            }
+            if (!temp.isEmpty()) {
+                result.add(temp.strip());
+                temp = "";
+            }
+            if (specSymbol.equals(SpecialSymbols.LEFT_BRACKET) ||
+                    specSymbol.equals(SpecialSymbols.RIGHT_BRACKET)) {
+                result.add(String.valueOf(symbol));
+            }
+        }
+        if (!temp.isEmpty()) {
+            result.add(temp.strip());
+        }
+        return result;
     }
 
 }

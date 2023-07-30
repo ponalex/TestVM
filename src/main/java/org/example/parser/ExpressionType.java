@@ -1,4 +1,6 @@
-package org.example.process;
+package org.example.parser;
+
+import org.example.parser.Interpreter;
 
 public enum ExpressionType {
     TYPE_ZERO {

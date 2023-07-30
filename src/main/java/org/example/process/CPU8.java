@@ -1,7 +1,8 @@
 package org.example.process;
 
+import org.example.parser.Opcodes;
+
 import java.util.Arrays;
-import java.util.stream.Collectors;
 
 public class CPU8 extends CPU implements Runnable {
 

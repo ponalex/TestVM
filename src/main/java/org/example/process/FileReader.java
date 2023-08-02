@@ -24,7 +24,12 @@ public class FileReader {
             fileStream = new FileInputStream(configFile);
         } catch (FileNotFoundException e) {
             SimpleLogger.printError(
-                    String.format("File \'%s\' was not found", filename));
+                    String.format("File \'%s\' was not found.", filename));
+            System.exit(exitcode);
+        }
+        catch (SecurityException se){
+            SimpleLogger.printError(
+                    String.format("\'%s\':  permission denied.", filename));
             System.exit(exitcode);
         }
 

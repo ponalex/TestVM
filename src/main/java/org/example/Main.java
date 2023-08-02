@@ -8,7 +8,7 @@ import org.example.process.CommandController;
 import org.example.process.FileReader;
 import org.example.parser.Interpreter;
 
-import java.util.Arrays;
+
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -28,13 +28,15 @@ public class Main {
             variableMap.put("reg" + Integer.toHexString(i).toUpperCase(), i);
         }
 
-//  TODO
-//  Write handling of command line arguments.
+//
+//  Check if filename is passed to configuration.
         CPU8 cpu = new CPU8();
         if (!Configuration.INPUT_FILE.isEmpty()) {
             String text = FileReader.loadStringFile(Configuration.INPUT_FILE);
             String[] byteCode;
-// Source contains pseoudo assembly code
+//  Source (SOURCE_FILE) contains pseudo assembly code
+//  There are two types of input files
+//  Pseudo assembly and pseudo byte code
             if (!Configuration.SOURCE_FILE) {
                 byteCode = Interpreter.splitByteString(text.split("\n")).toArray(new String[0]);
             } else {
@@ -43,10 +45,12 @@ public class Main {
             cpu.loadMemory(byteCode);
         }
 
-//  TODO
 //  Write handling the line according the first symbol of command line
         Scanner scanner = new Scanner(System.in);
         String inputString = ">";
+//  Create controller to get access to cpu
+//      for run mode
+//      for interactive mode
         CommandController controller = new CommandController(cpu);
         if (!Configuration.INTERACTIVE) {
             Thread process = new Thread(cpu);

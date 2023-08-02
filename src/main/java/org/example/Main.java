@@ -8,6 +8,7 @@ import org.example.process.CommandController;
 import org.example.process.FileReader;
 import org.example.parser.Interpreter;
 
+import java.util.Arrays;
 import java.util.HashMap;
 import java.util.Scanner;
 import java.util.logging.Level;
@@ -21,7 +22,7 @@ public class Main {
         SimpleLogger.setLoggerLevel(Level.WARNING);
         Configuration config = Configuration.getConfiguration();
         Configuration.setConfiguration(args);
-
+// Set register name to substitute its address
         HashMap<String, Integer> variableMap = new HashMap<>();
         for (int i = 0; i < 16; i++) {
             variableMap.put("reg" + Integer.toHexString(i).toUpperCase(), i);
@@ -30,9 +31,10 @@ public class Main {
 //  TODO
 //  Write handling of command line arguments.
         CPU8 cpu = new CPU8();
-        if (Configuration.INTERACTIVE) {
+        if (!Configuration.INPUT_FILE.isEmpty()) {
             String text = FileReader.loadStringFile(Configuration.INPUT_FILE);
             String[] byteCode;
+// Source contains pseoudo assembly code
             if (!Configuration.SOURCE_FILE) {
                 byteCode = Interpreter.splitByteString(text.split("\n")).toArray(new String[0]);
             } else {

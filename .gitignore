@@ -3,6 +3,9 @@
 /workspace.xml
 target
 src/test
+message.txt
+testload.txt
+testread.txt
 TestFSM.iml
 .idea
 out

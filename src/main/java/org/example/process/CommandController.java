@@ -72,4 +72,8 @@ public class CommandController {
         return controller.getStatus();
     }
 
+    public void sendMessageToBuffer(String message){
+
+    }
+
 }

@@ -102,7 +102,7 @@ public abstract class CPU implements Runnable{
         System.arraycopy(block,0,memory,0, block.length);
     }
 
-    public void writeToRegister(int address, int word) {
+    public synchronized void writeToRegister(int address, int word) {
         if (address >= register.length) {
             throw new NullPointerException("Wrong address of register");
         }

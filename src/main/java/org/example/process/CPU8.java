@@ -43,7 +43,6 @@ public class CPU8 extends CPU implements Runnable {
     public void makeOneStep() {
         excerpt();
         evaluate();
-//        clearInstructionRegister();
     }
 
     // selection from
@@ -148,5 +147,4 @@ public class CPU8 extends CPU implements Runnable {
             writeToRegister(PROTECTED_REGISTER, readRegister(PROTECTED_REGISTER) | (1 << (4 + (reg2 >> 1))));
         }
     }
-
 }

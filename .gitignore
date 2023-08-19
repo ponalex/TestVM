@@ -5,4 +5,9 @@ target
 src/test
 TestFSM.iml
 .idea
+message.txt
+testload.byte
+testload.txt
+testread.byte
+testread.txt
 out

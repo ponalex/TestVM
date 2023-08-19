@@ -53,7 +53,7 @@ public class Configuration {
                     break;
                 case "-o":
                     OUTPUT_FILE = iterator.next();
-                    SOURCE_FILE = false;
+                    SOURCE_FILE = true;
                     INTERACTIVE = false;
                     break;
                 case "-O":

@@ -72,4 +72,19 @@ public class CommandController {
         return controller.getStatus();
     }
 
+    public void sendToCPU(String text){
+
+    }
+
+    public String readFromCPU(IOBuffer cpuBuffer, CPU cpu){
+
+
+        //  Проверить что есть в процессоре для того что бы прочитать.
+        //      Если есть то прочитать и вывести на экран
+        //      Если нет то проверить есть ли что в буфере
+        //          Если есть что то в буфере то записать в регистр
+
+        return "Hello world!";
+    }
+
 }

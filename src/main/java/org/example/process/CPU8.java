@@ -2,7 +2,6 @@ package org.example.process;
 
 import org.example.parser.Opcodes;
 
-import java.util.Arrays;
 
 public class CPU8 extends CPU implements Runnable {
 
@@ -32,10 +31,17 @@ public class CPU8 extends CPU implements Runnable {
     }
 
     public void loadMemory(String[] byteCode){
-        int[] opcodes = Arrays
-                .stream(byteCode)
-                .map(p -> p.split("\s*:\s*")[1])
-                .mapToInt(p -> Integer.parseInt(p, 16)).toArray();
+        int[] opcodes;
+        String lastLine = byteCode[byteCode.length-1];
+        int arraySize = Integer.parseInt(lastLine.strip().split("\s*:\s*")[0], 16);
+        opcodes = new int[arraySize+1];
+        int number;
+        int code;
+        for (String line:byteCode) {
+           number = Integer.parseInt(line.strip().split("\s*:\s*")[0], 16);
+           code = Integer.parseInt(line.strip().split("\s*:\s*")[1], 16);
+           opcodes[number] = code;
+        }
         writeBlockToMemory(opcodes);
     }
 
@@ -43,7 +49,6 @@ public class CPU8 extends CPU implements Runnable {
     public void makeOneStep() {
         excerpt();
         evaluate();
-//        clearInstructionRegister();
     }
 
     // selection from
@@ -148,5 +153,4 @@ public class CPU8 extends CPU implements Runnable {
             writeToRegister(PROTECTED_REGISTER, readRegister(PROTECTED_REGISTER) | (1 << (4 + (reg2 >> 1))));
         }
     }
-
 }

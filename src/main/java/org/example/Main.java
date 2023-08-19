@@ -7,6 +7,7 @@ import org.example.process.CPU8;
 import org.example.process.CommandController;
 import org.example.process.FileReader;
 import org.example.parser.Interpreter;
+import org.example.process.IOBuffer;
 
 
 import java.util.HashMap;
@@ -38,9 +39,15 @@ public class Main {
 //  There are two types of input files
 //  Pseudo assembly and pseudo byte code
             if (!Configuration.SOURCE_FILE) {
-                byteCode = Interpreter.splitByteString(text.split("\n")).toArray(new String[0]);
+                byteCode = text.split("\n");
             } else {
                 byteCode = Interpreter.translateCommandToCode(text, variableMap);
+                if (!Configuration.OUTPUT_FILE.isEmpty()) {
+                    FileReader.writeToFile(Configuration.OUTPUT_FILE, byteCode);
+                    if (!Configuration.INTERACTIVE) {
+                        return;
+                    }
+                }
             }
             cpu.loadMemory(byteCode);
         }
@@ -48,21 +55,14 @@ public class Main {
 //  Write handling the line according the first symbol of command line
         Scanner scanner = new Scanner(System.in);
         String inputString = ">";
-//  Create controller to get access to cpu
-//      for run mode
-//      for interactive mode
-        CommandController controller = new CommandController(cpu);
         if (!Configuration.INTERACTIVE) {
-            Thread process = new Thread(cpu);
-            process.start();
-
-            while (process.isAlive()) {
+            IOBuffer buffer = new IOBuffer(cpu);
+            while (buffer.isAlive()) {
                 inputString = scanner.nextLine();
-//                if (cpu.readyToWrite()) {
-//                    cpu.writeRegister(1);
-//                }
+                buffer.writeToBuffer(inputString);
             }
         } else {
+            CommandController controller = new CommandController(cpu);
             while (!controller.getStatus()) {
                 Display.promptString();
                 inputString = scanner.nextLine();

@@ -81,7 +81,7 @@ public abstract class CPU implements Runnable{
         return memory[programCounter];
     }
 
-    public int readRegister(int i) {
+    public synchronized int readRegister(int i) {
         if (i >= register.length) {
             throw new NullPointerException("Wrong address of register");
         }

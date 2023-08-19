@@ -52,12 +52,12 @@ public class FileReader {
                 return;
             }
         }
-        if (!Files.isWritable(pathToFile)){
-            throw new ReadOnlyFileSystemException();
-        }
+//        if (!Files.isWritable(pathToFile)){
+//            throw new ReadOnlyFileSystemException();
+//        }
         String text = Arrays.stream(lines).map(line -> line+"\n").collect(Collectors.joining());
         try {
-            Files.writeString(pathToFile, text, CHARSET, StandardOpenOption.WRITE);
+            Files.writeString(pathToFile, text, CHARSET, StandardOpenOption.CREATE);
         } catch (IOException e) {
             SimpleLogger.printError(
                     String.format("Cannot write the file '%s'.", filename));
